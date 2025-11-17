@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # 6. 서버가 사용하는 포트 오픈하기
-EXPOSE 5000
+EXPOSE 3000
 
 # 7. 서버를 실행하는 명령
 # CMD [ "node", "index.ejs" ]
