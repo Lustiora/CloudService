@@ -17,7 +17,7 @@ COPY . .
 EXPOSE 5000
 
 # 7. 서버를 실행하는 명령
-CMD [ "node", "index.ejs" ]
+CMD [ "node", "../views/index.ejs" ]
 # CMD [ "node", "./bin/www" ] - express-generator
 
 # 8. Docker image 만들기
