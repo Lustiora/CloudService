@@ -1,0 +1,121 @@
+<div class="row my-5">
+  <div class="col">
+    <h1 class="text-center mb-5">Edit Account</h1>
+    <div class="card p-5">
+      <form id="f_update" name="frm" method="post">
+        <div class="input-group my-2">
+          <div class="input-group-text px-5">Name</div>
+          <input class="form-control" id="name" name="name" value="" />
+        </div>
+        <div class="input-group my-2">
+          <div class="input-group-text px-5">Address</div>
+          <input class="form-control" id="address" name="address" value="" />
+        </div>
+        <div class="input-group my-2">
+          <div class="input-group-text px-5">Phone Number</div>
+          <input class="form-control" id="phone" name="phone" value="" />
+        </div>
+        <div>
+          <img id="fileName" src="https://placehold.co/200x200" width="30%" />
+          <input class="form-control mt-2" type="file" id="file" accept="image/*" />
+        </div>
+        <div class="text-center mt-3">
+          <button class="btn-primary btn px-5">Edit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { app } from '/javascripts/firebase.js'
+  import { getFirestore, setDoc, doc, collection, getDoc } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js';
+  import ImageUploader from '/javascripts/image_upload.js'
+  const db = getFirestore()
+  // console.log(db);
+  const imageUploader = new ImageUploader()
+  // 변수 선언시 선언할 변수와 변수명이 동일하면 충돌이 발생 error : const ImageUploader = new ImageUploader()
+  const fileInput = document.querySelector("#file")
+  const fileName = document.querySelector("#fileName")
+  const nameInput = document.querySelector("#name")
+  const addressInput = document.querySelector("#address")
+  const phoneInput = document.querySelector("#phone")
+  // edit viewer에서 firestore에 접속하여 user정보를 호출하여 화면에 출력
+  // login.ejs에서 로그인에 성공하면 firebase에서 응답으로 보내준 data에서 꺼낸값을 브라우저 localstorage에 저장
+  const uid = window.localStorage.getItem("uid")
+  const snapshot = await getDoc(doc(db, `users/${uid}`))
+  if(snapshot.data){
+    const user = snapshot.data()
+    // console.log(user);
+    if(user.photo){
+      fileName.src = user.photo
+    }
+    // console.log(`${user.name},${user.phone},${user.address},${user.photo}`);
+    nameInput.value = user.name
+    addressInput.value = user.address
+    phoneInput.value = user.phone
+  }
+  // 폼 전송 이벤트 처리
+  const f_update = document.querySelector("#f_update")
+  f_update.addEventListener("submit", async function(e){
+    e.preventDefault()
+    if(window.confirm("Edit All Right?")){
+      console.log('Edit?');
+      const name = nameInput.value;
+      const address = addressInput.value;
+      const phone = phoneInput.value;
+      // 이미지도 변경?
+      if(fileInput.files[0]){
+        const file = fileInput.files[0]
+        console.log('Image Select');
+        const result = await imageUploader.upload(file)
+        console.log(result);
+        // 이미지 이름 - result.original_filename
+        // 클라우드 이미지 url - result.secure_url
+        fileName.src = result.secure_url
+        await setDoc(doc(db, `users/${uid}`),{
+          name:name,
+          address:address,
+          phone:phone,
+          photo:result.secure_url
+        })
+      } // end of inner if
+      alert("Edit OK.")
+    } // end of outer if
+  })
+
+
+  // image file select/upload
+  fileInput.addEventListener("change", function(e){ // async function(e){
+    const file = e.target.files[0]
+    if(file){
+      const reader = new FileReader()
+      reader.onload = function(e){
+        fileName.src = e.target.result
+      } // end of Onload Event
+      reader.readAsDataURL(file)
+      // await ImageUploader.upload(file)
+    }
+
+  }) // end of Event Handle
+
+</script>
+<!-- 
+// filereader로 select file을 Data Url Reader
+// Reader End 후 결과를 <img>태그 src에 삽입
+// 브라우저가 그 파일을 화면에 이미지로 출력
+// image file seclect -> onchange Event Call
+// user가 imput에서 file을 select
+// change event call
+// 1. change event 등록
+// 2. select file 호출
+// 3. file을 미리보기 위해 필요한 객체 생성 -> 메모리에 로딩
+// -> 메모리에 로딩하는 이유 = 그 객체가 소유하고 있는 속성이나 메서드를 호출하기 위함
+// const reader = new fileReader()
+// 4. file reader 완료 후 실행할 함수를 지정
+// 미리보기 이미지를 업데이트
+// fileNameImg.src = e.target.result
+// 5. 실제로 file reader start
+// reader.readAsDataURL(file)
+// fileInput.addEventListener("change", function(e){})
+-->

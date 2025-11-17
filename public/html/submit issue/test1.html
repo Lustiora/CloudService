@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- 
+  
+  -->
+  <script type="module"> // module Type 사용시 defer 필요없음
+    console.log(document.querySelector("#f_insert"));
+    const f_insert = document.querySelector("#f_insert")
+    const f_update = document.querySelector("#f_update")
+    const member_id = document.querySelector("#member_id").value
+    // 아래 코드는 실행기회를 갖더라도 최초의 값이 들어있지 않음.
+    // let member_email = document.querySelector("#member_email").value
+    console.log(`submit이전 member_id:${member_id}, member_email:${member_email}`);
+    f_insert.addEventListener('submit', function(){
+      console.log(`submit이후 member_id:${member_id}`);
+    })
+    f_update.addEventListener('submit', function(e){
+      // e.preventDefault()
+      member_email = document.querySelector("#member_email").value
+      console.log(`submit이후 member_id:${member_id}`);
+      console.log(`submit이후 member_email:${member_email}`);
+    })
+    const url = window.location.search
+    const member_email = new URLSearchParams(url)
+    console.log(member_email.get("member_email"));
+  </script>
+  <form id="f_insert" method="get">
+    <input type="text" id="member_id" name="member_id" value="즈라"><br>
+    <input type="button" value="id-전송"><br>
+  </form>
+  <hr>
+  <form id="f_update" method="get" action="test1Submit.html">
+    <input type="text" id="member_email" name="member_email"><br>
+    <button type="submit">email-전송</button><br>
+  </form>
+</body>
+</html>

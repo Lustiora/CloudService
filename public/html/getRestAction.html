@@ -1,0 +1,13 @@
+<script>
+  // Rest(철학)와 Restful(Rest지키는 ) API의 차이점에 대해 말할 수 있다?
+  // https://velog.io/@nosenal27/Rest-API-vs-Restful-API
+  // 이 파일의 확장자는 html이지만 이 실습에서 역할은
+  // Back-End를 담당하게 하자
+  // console.log('getRestAction.html Call');
+  // const paramsString = "email=perican@cosmo.net&password=qwer1234";
+  const paramsString = window.location.search // window.location.search는 입력값을 호출하기 위해 사용
+  let searchParams = new URLSearchParams(paramsString);
+  // URLSearchParams는 ()값 안의 문자열을 키=값으로 분해하여 저장하기 위해 사용
+  console.log(`email : ${searchParams.get("email")}, password : ${searchParams.get("password")}`);
+  // http://localhost:5500/public/html/getRestAction.html
+</script>

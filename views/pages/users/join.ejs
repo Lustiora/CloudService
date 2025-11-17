@@ -1,0 +1,60 @@
+<div class="row my-5 justify-content-center">
+    <div class="col-8 col-md-6 col-lg-4">
+      <h3 class="text-center mb-5">Sign Up</h3>
+      <form id="join" name="frm" method="post">
+        <div class="input-group my-2">
+          <div class="input-group-text">Email</div>
+          <input class="form-control" id="email" name="email" value="" />
+        </div>
+        <div class="input-group">
+          <div class="input-group-text">Password</div>
+          <input
+            class="form-control"
+            id="password"
+            name="password"
+            type="password"
+            value=""
+          />
+        </div>
+        <div class="my-3">
+          <button class="btn btn-success w-100">Sing Up</button>
+        </div>
+        <div class="text-end mt-3"><a href="/login">Login</a></div>
+      </form>
+    </div>
+  </div>
+
+<script type="module">
+  import { app } from '/javascripts/firebase.js'
+  import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js'
+  const auth = getAuth(app)
+  const join = document.querySelector("#join")
+  // 회원가입 버튼을 눌렀을때 실행
+
+  // <button>에 type이 없으면 default가 submit.
+  // click Event로 처리하지 않아도 서버로 전송.
+
+  // <input type='button'>
+  // submit 이슈가 있어서 서버로 전송 후에 새로고침 발동 -> 이벤트 전이가 발생
+  // event.preventDefault()를 반드시 호출하여 이벤트 전이 방지
+  frm.addEventListener('submit', function(event){
+    event.preventDefault()
+    console.log('Sing Up');
+    const u_email = document.querySelector("#email").value
+    const u_password = document.querySelector("#password").value
+    console.log(`u_email:${u_email},u_password:${u_password}`);
+    createUserWithEmailAndPassword(auth,u_email,u_password) // (auth,null,null) => 400 - bad Request
+    .then((Response) => {
+      // 회원가입 성공하면 함수에 파라미터와 인증객체와 이메일과 비번을 비교해서
+      // 일치하면 내가 응답으로 메시지를 주입(response)해 줄것을 약속 - 콜백함수
+      console.log(Response);
+      // 회원가입에 성공하면 어디로 가면 될까요? - 로그인화면으로 가야지?
+      location.href = "/login"
+    }) // end of createUserWithEmailAndPassword
+    .catch((error) => { // 에러 발생시 실행
+      const errorCode = error.code
+      const errorMessage = error.Message
+      console.log(`${errorCode}, ${errorMessage}`);
+    })
+  }); // 회원가입 이벤트 처리 끝 end of Submit
+</script>

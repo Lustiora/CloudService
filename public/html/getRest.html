@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>getRest</title>
+  <script>
+    function login(){
+      // document -> getRest.html 문서 전체
+      // http://localhost:5500/public/html/getRest.html
+      // 로그인버튼 클릭 -> login()호출
+      // http://localhost:5500/public/html/getRestAction.html?email=이메일주소&password=비밀번호
+      document.querySelector("#f_login").submit() // .submit()은 지정한 form 요소를 찾기위해 사용
+    }
+  </script>
+</head>
+<body>
+  <form id="f_login" method="get" action="getRestAction.html">
+    email : <input type="text" id="email" name="email"><br>
+    password : <input type="password" id="password" name="password"><br>
+    <input type="button" value="Login" onclick="login()">
+  </form>
+</body>
+</html>
