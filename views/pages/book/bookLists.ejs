@@ -1,1 +1,53 @@
-도서 조건 검색 및 목록 보기
+<div class="row mt-5 justify-content-end">
+  <div class="col-6 col-md-4">
+    <form name="frm">
+      <div class="input-group">
+        <input type="text" name="query" class="form-control" value="" />
+        <button class="btn btn-success" type="submit"> Search </button>
+      </div>
+    </form>
+  </div>
+</div>
+<hr />
+
+<!-- 검색 결과 출력 영역 -->
+
+
+<!-- Handlebars 템플릿 -->
+<script type="text/x-handlebars-template" id="temp-book">
+  {{#each documents}}
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="card my-2">
+        <div class="card-body text-center">
+          <img src="{{xxxxx}}" index="{{@index}}" alt="도서이미지" style="cursor:pointer; width:80%" />
+          <div class="ellipsis mt-2">{{xxxx}}</div>
+        </div>
+        <div class="card-footer text-center" style="font-size:0.9rem;">
+          {{xxxxx}}
+          <span class="cart ms-3" book="{{book @this}}" style="cursor:pointer; color:green;">CART</span>
+        </div>
+      </div>
+    </div>
+  {{/each}}
+</script>
+
+<script type="module">
+  // 도서 리스트 조회
+  document.addEventListener('DOMContentLoaded', function(){
+    function getBookList(){
+    const url = new URL('https://dapi.kakao.com/v3/search/book')
+    url.searchParams.set('query','자바')
+    url.searchParams.set('target','title')
+    url.searchParams.set('page',1)
+    fetch(url, {
+      headers:{
+        "Authorization":"KakaoAK 4061ebc2f92294d9be224173dcd52dd5"
+      }
+    })
+      .then((response) => response.json())
+      .then((result) => console.log(result))
+      .catch((error) => console.error(error));
+    } // end of getBookList
+    getBookList()
+  })
+</script>
