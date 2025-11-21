@@ -9,6 +9,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const oracledb = require('oracledb');
 const dbConfig = require('./dbConfig');
+const cors = require('cors'); // 💡 1. cors 모듈 로딩
 
 var indexRouter = require('./routes/index');
 // 아래는 라우팅을 지원하는 모듈이 있는 물리적인 위치값이다.
@@ -82,6 +83,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+const corsOptions = {
+    origin: 'http://127.0.0.1:5500', // 요청을 보낸 클라이언트의 출처(Origin)를 명시
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // 허용할 HTTP 메서드
+    allowedHeaders: ['Content-Type', 'Authorization'], // 허용할 헤더
+    credentials: true // 쿠키와 인증 헤더를 허용
+};
+
+app.use(cors(corsOptions)); // 💡 2. cors 미들웨어 적용
 
 // DEPT 목록 조회 API - Oracle DB 연동
 app.get('/dept', async (req, res) => {

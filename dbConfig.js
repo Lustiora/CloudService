@@ -5,5 +5,5 @@ module.exports = {
   // 1. 'localhost:1521/orcl11' (기본 형식)
   // 2. '127.0.0.1:1521/orcl11' (IP 주소 사용)
   // 3. '(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl11)))' (TNS 형식)
-  connectString: '192.168.0.44:1521/xe'
+  connectString: 'localhost:1521/xe'
 };
